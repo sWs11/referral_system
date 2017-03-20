@@ -9,6 +9,9 @@
 
 include_once(ROOT . '/models/Users.php');
 
+/**
+ * Class UsersController
+ */
 class UsersController
 {
     public function actionIndex () {
@@ -31,6 +34,7 @@ class UsersController
     }
 
     public function actionLogin () {
+
         //Якщо користувач залогінений, то перенаправити в особистий кабінет
         Common::checkLoginUser();
 
@@ -63,15 +67,38 @@ class UsersController
         header("Location: /");
     }
 
-    public function actionAdd () {
+    public function actionAdd ($parameters = null) {
         Common::checkLoginUser();
 
         $title = 'Реєстрація';
 
         $login ='';
         $password ='';
-        $isRegister = false;
+        $refer_id = null;
         $validate_errors = [];
+
+        /*echo "<br><br> parameters";
+        var_dump($parameters);*/
+
+        if ($parameters) {
+            if (!preg_match('~\W+~', $parameters[0])) {
+                $refer_user = Users::checkReferralLink($parameters[0]);
+
+                if (count($refer_user) > 0) {
+//                    echo "<br> refer_user";
+                    $refer_id = $refer_user[0]['id'];
+//                    var_dump($refer_user[0]);
+                } else {
+                    $validate_errors['refer_user_link_not_found'] = false;
+                }
+            } else {
+                $validate_errors['refer_user_link_incorrect'] = false;
+//                echo "<br>NE OK";
+            }
+        } else {
+//            echo "<br> parameters = null !!!";
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             if (isset($_POST['submit']) && !empty($_POST['login']) && !empty($_POST['password'])) {
@@ -98,7 +125,7 @@ class UsersController
                 }
 
                 if (count($validate_errors) == 0) {
-                    $result = Users::addUser(htmlspecialchars($login), md5($password), $referral_link);
+                    $result = Users::addUser(htmlspecialchars($login), md5($password), $referral_link, $refer_id);
                     //Якщо реєстрація пройшла успішно, юзера одразу й залогінить
                     if ($result) {
                         $this->actionLogin();
@@ -119,8 +146,6 @@ class UsersController
         Common::checkLoginGuest();
 
         $data = Users::cabinet();
-
-//        var_dump($data);
 
         $title = 'Особистий кабінет';
 

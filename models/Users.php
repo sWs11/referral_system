@@ -10,6 +10,18 @@
 
 class Users
 {
+
+    public static function checkReferralLink ($referral_link) {
+        $db = Db::getConnection();
+        $query = "SELECT * FROM users WHERE referral_link = :referral_link";
+        $result = $db->prepare($query);
+        $result->execute(['referral_link' => $referral_link]);
+        $refer_user = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        return ($refer_user);
+    }
+
+
     /**
      * @param $login
      * @param $password
@@ -21,8 +33,9 @@ class Users
         $db = Db::getConnection();
 
         if ($refer_id != null) {
-            echo 'null';
-//            $query = 'INSERT INTO users (login, password, referral_link)' ;
+//            echo "<br> $refer_id";die;
+            $values = ['login'=>$login, 'password'=>$password, 'referral_link'=>$referral_link, 'refer_id'=>$refer_id];
+            $query = "INSERT INTO users (`login`, `password`, `referral_link`, `refer_id`) VALUES (:login, :password, :referral_link, :refer_id)";
         } else {
 //            echo 'NN';
             $values = ['login'=>$login, 'password'=>$password, 'referral_link'=>$referral_link];

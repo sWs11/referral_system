@@ -11,11 +11,13 @@
 
         <h1>Add new user</h1>
         <form action="" method="post">
-            <!--        $validate_errors['login_length']-->
+            <?php if(isset($validate_errors['refer_user_link_incorrect'])) {echo "<p style='color: red;'>Увага! Реферальне посилання некоректне!!!</p>";} ?>
+            <?php if(isset($validate_errors['refer_user_link_not_found'])) {echo "<p style='color: red;'>Увага! Користувача з таким реферальним посиланням не існує!!!</p>";} ?>
+
             <?php if(isset($validate_errors['login_length'])) {echo "<p>Логін повинен бути щонайменш 3 символи</p>";} ?>
             <?php if(isset($validate_errors['login_exists'])) {echo "<p>Такий логін вже існує</p>";} ?>
             <p><input type="text" name="login" placeholder="login" value="<?php echo $login; ?>"></p>
-            <!--        <input type="email" name="email" placeholder="email">-->
+
             <?php if(isset($validate_errors['password_length'])) {echo "<p>Пароль повинен бути щонайменш 6 символів</p>";} ?>
             <p><input type="password" name="password" placeholder="password" value="<?php echo $password; ?>"></p>
             <?php if(isset($validate_errors['repeat_password'])) {echo "<p>Паролі не співпадають</p>";} ?>

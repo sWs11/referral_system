@@ -31,49 +31,42 @@ class Router
                 return  'index';
             }
             return  trim($uri, '/');
-//            return  $_SERVER['REQUEST_URI'];
         }
     }
 
     public function run()
     {
         $uri = $this->getURI();
-//        $pattern = '~(\?\w+[=]+\d+$)~';XDEBUG
-
-
-
-
-/*        $string = $uri;
-        $pattern = '~(\?\w+$)~i';
-        $replacement = 'test| ${1} |test';
-        echo preg_replace($pattern, $replacement, $string);*/
-//        echo $replacement;
-//        echo "<br>$string";
-//        die();
 
         foreach ($this->routes as $uriPattern => $path) {
 
-//            echo "<br>$uriPattern";
-
             if (preg_match("~$uriPattern~", $uri)) {
 
-//                echo "<br>";
-/*                echo "<br>uri = $uri";
-                echo "<br>key = $uriPattern";
-                echo "<br>path = $path";*/
+/*                $reg = 'user/add/(\w+)';
+                $strIn = $uri;
+                $strOut = "users/add/$1";
 
-                $segment = explode('/', $path);
+                echo preg_replace("~$reg~", $strOut, $strIn);*/
+
+                $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
+
+                $segment = explode('/', $internalRoute);
+
+                /*echo "<br> defaul";
+                var_dump($segment);*/
 
                 $controllerName = array_shift($segment).'Controller';
                 $controllerName = ucfirst($controllerName);
 
-//                var_dump($segment);die;
-
-//                echo "<br>controllerName = $controllerName";
+                /*echo "<br> after take controller name";
+                var_dump($segment);*/
 
                 $actionName = 'action'.ucfirst(array_shift($segment));
 
-//                echo "<br>actionName = $actionName";
+                /*echo "<br> after take action name";
+                var_dump($segment);*/
+
+                $parameter = $segment;
 
                 $controllerFile = ROOT. '/controllers/' . $controllerName . '.php';
 
@@ -82,7 +75,7 @@ class Router
                 }
 
                 $controllerObject = new $controllerName;
-                $result = $controllerObject->$actionName();
+                $result = $controllerObject->$actionName($parameter);
                 if ($result != null) {
                     break;
                 }

@@ -7,6 +7,7 @@
  */
 
 return array(
+//    'user/add/(\w+)' => 'users/addReferral/$1',
     'user/add' => 'users/add',
     'user/login' => 'users/login',
     'user/cabinet' => 'users/cabinet',
