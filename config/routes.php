@@ -8,6 +8,9 @@
 
 return array(
     'user/add' => 'users/add',
+    'user/login' => 'users/login',
+    'user/cabinet' => 'users/cabinet',
+    'user/logout' => 'users/logout',
     'user' => 'users/index',
 
 

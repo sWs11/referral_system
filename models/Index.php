@@ -11,12 +11,12 @@ class Index
     public static function newUser () {
         $db = Db::getConnection();
 
-        $result = $db->query('SELECT * from testtable');
-        $result->setFetchMode(PDO::FETCH_ASSOC);
+//        $result = $db->query('SELECT * from testtable');
+//        $result->setFetchMode(PDO::FETCH_ASSOC);
+//
+//        $item = $result->fetch();
 
-        $item = $result->fetch();
-
-        return $item;
+//        return $item;
     }
 
 }

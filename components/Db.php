@@ -12,7 +12,12 @@ class Db
         $params = include(ROOT.'/config/db_params.php');
 
         $dsn = "mysql:host=$params[host];dbname=$params[dbname]";
-        $db = new PDO($dsn, $params['dbuser'], $params['dbpass'], $params['options']);
+        try {
+            $db = new PDO($dsn, $params['dbuser'], $params['dbpass'], $params['options']);
+        } catch (PDOException $error) {
+            echo "ERROR CONNECTION" . $error->getMessage();
+            exit;
+        }
 
         return $db;
     }

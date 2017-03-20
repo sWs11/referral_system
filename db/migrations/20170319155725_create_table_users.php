@@ -30,11 +30,12 @@ class CreateTableUsers extends AbstractMigration
         $table = $this->table('users');
         $table->addColumn('login', 'string', array('limit' => 64))
             ->addColumn('password', 'string', array('limit' => 32))
-            ->addColumn('email', 'string', array('limit' => 100))
+//            ->addColumn('email', 'string', array('limit' => 100))
             ->addColumn('balance', 'integer', array('default' => 0))
             ->addColumn('refer_id', 'integer', array('null' => true))
+            ->addColumn('referral_link', 'string')
             ->addColumn('created', 'timestamp', array('default' => 'CURRENT_TIMESTAMP'))
-            ->addIndex(array('login', 'email'), array('unique' => true))
+            ->addIndex(array('login'), array('unique' => true))
             ->addForeignKey('refer_id', 'users', 'id', array('delete'=> 'SET_NULL', 'update'=> 'NO_ACTION'))
             ->create();
     }

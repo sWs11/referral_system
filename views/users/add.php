@@ -7,23 +7,23 @@
  */
 
 ?>
+<?php  include_once (ROOT . '/views/layouts/header.php')?>
 
-<!doctype html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Add new user</h1>
-    <form action="" method="post">
-        <input type="text" name="name" placeholder="name">
-        <input type="email" name="email" placeholder="email">
-        <input type="password" name="password" placeholder="password">
-        <input type="submit" value="add">
-    </form>
-</body>
-</html>
+        <h1>Add new user</h1>
+        <form action="" method="post">
+            <!--        $validate_errors['login_length']-->
+            <?php if(isset($validate_errors['login_length'])) {echo "<p>Логін повинен бути щонайменш 3 символи</p>";} ?>
+            <?php if(isset($validate_errors['login_exists'])) {echo "<p>Такий логін вже існує</p>";} ?>
+            <p><input type="text" name="login" placeholder="login" value="<?php echo $login; ?>"></p>
+            <!--        <input type="email" name="email" placeholder="email">-->
+            <?php if(isset($validate_errors['password_length'])) {echo "<p>Пароль повинен бути щонайменш 6 символів</p>";} ?>
+            <p><input type="password" name="password" placeholder="password" value="<?php echo $password; ?>"></p>
+            <?php if(isset($validate_errors['repeat_password'])) {echo "<p>Паролі не співпадають</p>";} ?>
+            <p><input type="password" name="repeat_password" placeholder="repeat password"></p>
+
+            <p><a href="/user/login">login</a></p>
+
+            <p><input type="submit" name="submit" value="add"></p>
+        </form>
+
+<?php  include_once (ROOT . '/views/layouts/footer.php')?>
