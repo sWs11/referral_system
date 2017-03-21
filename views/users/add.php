@@ -23,9 +23,7 @@
             <?php if(isset($validate_errors['repeat_password'])) {echo "<p>Паролі не співпадають</p>";} ?>
             <p><input type="password" name="repeat_password" placeholder="repeat password"></p>
 
-            <p><a href="/user/login">login</a></p>
-
-            <p><input type="submit" name="submit" value="add"></p>
+            <p><input type="submit" name="submit" value="Зареєструватись"></p>
         </form>
 
 <?php  include_once (ROOT . '/views/layouts/footer.php')?>

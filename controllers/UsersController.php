@@ -25,6 +25,7 @@ class UsersController
         $_SESSION['user']['id'] = $user_data['id'];
         $_SESSION['user']['login'] = $user_data['login'];
         $_SESSION['user']['referral_link'] = $user_data['referral_link'];
+        $_SESSION['user']['refer_id'] = $user_data['refer_id'];
 
 
 
@@ -144,12 +145,32 @@ class UsersController
 
     public function actionCabinet () {
         Common::checkLoginGuest();
-
         $data = Users::cabinet();
-
         $title = 'Особистий кабінет';
+        $validate_errors = [];
+
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['pay']) && isset($_POST['submit'])) {
+//            var_dump($_POST);
+            if (!is_int($_POST['pay'])) {
+                $validate_errors['not_int'] = false;
+            }
+            if (!$_POST['pay'] > 0) {
+                $validate_errors['less_than_zero'] = false;
+            }
+
+            if (count($validate_errors) == 0) {
+                Users::userPay($_POST['pay']);
+            }
+        }
 
         require_once(ROOT . '/views/users/cabinet.php');
         return true;
     }
+
+    /*public function actionPay () {
+
+
+
+        return true;
+    }*/
 }

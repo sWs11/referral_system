@@ -8,15 +8,13 @@
 
 return array(
 //    'user/add/(\w+)' => 'users/addReferral/$1',
+//    'user/pay' => 'users/pay',
     'user/add' => 'users/add',
     'user/login' => 'users/login',
     'user/cabinet' => 'users/cabinet',
     'user/logout' => 'users/logout',
     'user' => 'users/index',
 
-
-    'test/test2'=>'test2/index',
-    'test'=>'test/index',
-
-    'index'=>'index/index',
+    'index'=>'users/add',
+//    'index'=>'index/index',
 );

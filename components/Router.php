@@ -19,7 +19,7 @@ class Router
     private function getURI ()
     {
         if (!empty($_SERVER['REQUEST_URI'])) {
-//
+//          для дебага
             $pattern = '~(.+)\?XDEBUG.+~i';
             $replacement = '${1}';
 
@@ -52,19 +52,10 @@ class Router
 
                 $segment = explode('/', $internalRoute);
 
-                /*echo "<br> defaul";
-                var_dump($segment);*/
-
                 $controllerName = array_shift($segment).'Controller';
                 $controllerName = ucfirst($controllerName);
 
-                /*echo "<br> after take controller name";
-                var_dump($segment);*/
-
                 $actionName = 'action'.ucfirst(array_shift($segment));
-
-                /*echo "<br> after take action name";
-                var_dump($segment);*/
 
                 $parameter = $segment;
 

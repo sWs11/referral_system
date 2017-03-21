@@ -16,9 +16,7 @@
         <p><input type="text" name="login" placeholder="login" value="<?php echo $login; ?>"></p>
         <p><input type="password" name="password" placeholder="password" value="<?php echo $password; ?>"></p>
 
-        <p><a href="/user/add">add acount</a></p>
-
-        <p><input type="submit" name="submit" value="login"></p>
+        <p><input type="submit" name="submit" value="Вхід"></p>
     </form>
 </form>
 <?php  include_once (ROOT . '/views/layouts/footer.php')?>

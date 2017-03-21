@@ -8,7 +8,18 @@
 ?>
 <?php  include_once (ROOT . '/views/layouts/header.php')?>
 <?php //var_dump($data); ?>
-<h1>Cabinet</h1>
+<h1>Особистий кабінет</h1>
+<hr>
+
+<form action="" method="post">
+    <h3>Поповнити баланс</h3>
+    <?php if (isset($validate_errors['not_int'])) echo "<p>Сума платежу повинна бути цілочисленним значенням!</p>"; ?>
+    <?php if (isset($validate_errors['less_than_zero'])) echo "<p>Сума платежу повинна більше нуля!</p>"; ?>
+    <input type="number" placeholder="Сума платежу" name="pay">
+    <input type="submit" name="submit" value="Поповнити">
+</form>
+
+<hr>
 
 <!--    <p><span>Login: </span><span> --><?php //echo Common::$dataUser['login']?><!--</span></p>-->
 <p>Логін: <?php echo $data['user_data']['login']; ?></p>
@@ -16,9 +27,8 @@
 <!--    <p>Реферальне посилання: --><?php //echo "http://{$_SERVER['SERVER_NAME']}/user/add/{$user_data['referral_link']}"; ?><!--</p>-->
 <p>Реферальне посилання: <a href="<?php echo "http://{$_SERVER['SERVER_NAME']}/user/add/{$data['user_data']['referral_link']}" ?>"><?php echo "http://{$_SERVER['SERVER_NAME']}/user/add/{$data['user_data']['referral_link']}" ?></a></p>
 <?php if (isset($data['user_data']['refer_id'])) : ?>
-    <p>Наставник: <?php echo $data['reffer_login']; ?></p>
+    <p>Рефер: <?php echo $data['refer_login']; ?></p>
 <?php endif; ?>
-
 
 <h3>Ваші реферали:</h3>
 <ul>

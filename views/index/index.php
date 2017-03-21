@@ -11,8 +11,8 @@
 
 
 <h1>Index page</h1>
-<p><a href="/user/add">add user</a></p>
-<p><a href="/user/login">login</a></p>
+<!--<p><a href="/user/add">add user</a></p>-->
+<!--<p><a href="/user/login">login</a></p>-->
 <!--<a href="/user/add">add user</a>-->
 
 

@@ -111,16 +111,72 @@ class Users
 
 //        Вибираємо дані(точніше тільки логін) реффера поточного користувача
         if (isset($user_data[0]['refer_id'])) {
-            $user_referr_query = "SELECT login FROM users WHERE id = :id";
-            $user_referr_result = $db->prepare($user_referr_query);
-            $user_referr_result->execute(['id'=>$user_data[0]['refer_id']]);
+            $user_refer_query = "SELECT login FROM users WHERE id = :id";
+            $user_refer_result = $db->prepare($user_refer_query);
+            $user_refer_result->execute(['id'=>$user_data[0]['refer_id']]);
 
-            $user_referr_data = $user_referr_result->fetchAll(PDO::FETCH_ASSOC);
+            $user_refer_data = $user_refer_result->fetchAll(PDO::FETCH_ASSOC);
 
-            $data['reffer_login'] = $user_referr_data[0]['login'];
+            $data['refer_login'] = $user_refer_data[0]['login'];
         }
 //        var_dump($data);die();
         return $data;
     }
+
+    public static function userPay ($pay) {
+
+        if (!is_int($pay)) {
+            header("Location: /user/cabinet/not_int");
+        }
+        if (!$pay > 0) {
+            header("Location: /user/cabinet/less_than_zero");
+        }
+
+        global $user_id;
+        global $refer_id;
+        $user_id = $_SESSION['user']['id'];
+        $refer_id = $_SESSION['user']['refer_id'];
+        $referral_rate = require (ROOT . '/config/referral_rate.php');
+
+        function updateBalance ($pay, $user_id, $refer_id) {
+            global $user_id;
+            global $refer_id;
+
+            $db = Db::getConnection();
+            $values = ['id' => $user_id, 'pay' => $pay];
+
+            $user_balance_query = "UPDATE users set balance = balance + :pay WHERE id = :id";
+            $user_balance_result = $db->prepare($user_balance_query);
+            $user_balance_result->execute($values);
+            if ($user_balance_result->rowCount() > 0) {
+                echo $user_balance_result->rowCount() . " records UPDATED successfully";
+                echo 'Поповнення балансу пройшло успішно!<br>';
+            }
+
+            if ($refer_id) {
+                $values = ['id' => $refer_id];
+                $refer_user_query = "SELECT id, refer_id FROM users WHERE id = :id";
+                $refer_user_result = $db->prepare($refer_user_query);
+                $refer_user_result->execute($values);
+                $refer_user_data = $refer_user_result->fetchAll(PDO::FETCH_ASSOC);
+
+                $user_id = $refer_user_data[0]['id'];
+                $refer_id = $refer_user_data[0]['refer_id'];
+            } else {
+                $user_id = null;
+            }
+        }
+
+        updateBalance ($pay, $user_id, $refer_id);
+
+        for ($i = 0; $i < count($referral_rate); $i++) {
+            $pay_for_refer = $pay*$referral_rate[$i];
+            updateBalance($pay_for_refer, $user_id, $refer_id);
+            if (!$user_id) {
+                break;
+            }
+        }
+    }
+
 
 }
