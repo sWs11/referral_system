@@ -11,9 +11,18 @@
 <h1>Особистий кабінет</h1>
 <hr>
 
+<?php
+if (isset($result_pay)) {
+    if ($result_pay) {
+        echo "<h3>Поповнення балансу пройшло успішно!</h3>";
+    } else {
+        echo "<h3>Відбулась помилка при поповненні балансу!</h3>";
+    }
+}
+?>
+
 <form action="" method="post">
     <h3>Поповнити баланс</h3>
-    <?php if (isset($validate_errors['not_int'])) echo "<p>Сума платежу повинна бути цілочисленним значенням!</p>"; ?>
     <?php if (isset($validate_errors['less_than_zero'])) echo "<p>Сума платежу повинна більше нуля!</p>"; ?>
     <input type="number" placeholder="Сума платежу" name="pay">
     <input type="submit" name="submit" value="Поповнити">

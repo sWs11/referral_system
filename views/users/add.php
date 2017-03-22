@@ -23,6 +23,8 @@
             <?php if(isset($validate_errors['repeat_password'])) {echo "<p>Паролі не співпадають</p>";} ?>
             <p><input type="password" name="repeat_password" placeholder="repeat password"></p>
 
+            <?php if (isset($refer_user[0]['login'])) echo "<p>Ви реєструєтесь по реферальному посиланню користувача  \"{$refer_user[0]['login']}\"</p>"; ?>
+
             <p><input type="submit" name="submit" value="Зареєструватись"></p>
         </form>
 

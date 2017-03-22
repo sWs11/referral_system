@@ -86,18 +86,13 @@ class UsersController
                 $refer_user = Users::checkReferralLink($parameters[0]);
 
                 if (count($refer_user) > 0) {
-//                    echo "<br> refer_user";
                     $refer_id = $refer_user[0]['id'];
-//                    var_dump($refer_user[0]);
                 } else {
                     $validate_errors['refer_user_link_not_found'] = false;
                 }
             } else {
                 $validate_errors['refer_user_link_incorrect'] = false;
-//                echo "<br>NE OK";
             }
-        } else {
-//            echo "<br> parameters = null !!!";
         }
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -109,11 +104,11 @@ class UsersController
                 $repeat_password = $_POST['repeat_password'];
                 $referral_link = hash("md5", $login);
 
-                if(strlen($login) < 3) {
+                if(mb_strlen($login) < 3) {
                     $validate_errors['login_length'] = false ;
                 }
 
-                if(strlen($password) < 6) {
+                if(mb_strlen($password) < 6) {
                     $validate_errors['password_length'] = false;
                 }
 
@@ -134,9 +129,6 @@ class UsersController
                 }
             }
         }
-//        echo $result;
-
-//        var_dump($_SERVER['REQUEST_METHOD']);
 
         require_once(ROOT . '/views/users/add.php');
 
@@ -145,24 +137,25 @@ class UsersController
 
     public function actionCabinet () {
         Common::checkLoginGuest();
-        $data = Users::cabinet();
+
         $title = 'Особистий кабінет';
         $validate_errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['pay']) && isset($_POST['submit'])) {
 //            var_dump($_POST);
-            if (!is_int($_POST['pay'])) {
-                $validate_errors['not_int'] = false;
-            }
+//            if (!is_int($_POST['pay'])) {
+//                $validate_errors['not_int'] = false;
+//            }
             if (!$_POST['pay'] > 0) {
                 $validate_errors['less_than_zero'] = false;
             }
 
             if (count($validate_errors) == 0) {
-                Users::userPay($_POST['pay']);
+                $result_pay = Users::userPay($_POST['pay']);
             }
         }
 
+        $data = Users::cabinet();
         require_once(ROOT . '/views/users/cabinet.php');
         return true;
     }

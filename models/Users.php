@@ -125,15 +125,9 @@ class Users
 
     public static function userPay ($pay) {
 
-        if (!is_int($pay)) {
-            header("Location: /user/cabinet/not_int");
-        }
-        if (!$pay > 0) {
-            header("Location: /user/cabinet/less_than_zero");
-        }
-
         global $user_id;
         global $refer_id;
+        global $result_pay;
         $user_id = $_SESSION['user']['id'];
         $refer_id = $_SESSION['user']['refer_id'];
         $referral_rate = require (ROOT . '/config/referral_rate.php');
@@ -141,6 +135,7 @@ class Users
         function updateBalance ($pay, $user_id, $refer_id) {
             global $user_id;
             global $refer_id;
+            global $result_pay;
 
             $db = Db::getConnection();
             $values = ['id' => $user_id, 'pay' => $pay];
@@ -149,8 +144,11 @@ class Users
             $user_balance_result = $db->prepare($user_balance_query);
             $user_balance_result->execute($values);
             if ($user_balance_result->rowCount() > 0) {
-                echo $user_balance_result->rowCount() . " records UPDATED successfully";
-                echo 'Поповнення балансу пройшло успішно!<br>';
+//                echo $user_balance_result->rowCount() . " records UPDATED successfully";
+//                echo 'Поповнення балансу пройшло успішно!<br>';
+                $result_pay  = true;
+            } else {
+                $result_pay  = false;
             }
 
             if ($refer_id) {
@@ -170,12 +168,14 @@ class Users
         updateBalance ($pay, $user_id, $refer_id);
 
         for ($i = 0; $i < count($referral_rate); $i++) {
-            $pay_for_refer = $pay*$referral_rate[$i];
-            updateBalance($pay_for_refer, $user_id, $refer_id);
-            if (!$user_id) {
+            if ($user_id) {
+                $pay_for_refer = $pay*$referral_rate[$i];
+                updateBalance($pay_for_refer, $user_id, $refer_id);
+            } else {
                 break;
             }
         }
+        return $result_pay;
     }
 
 
